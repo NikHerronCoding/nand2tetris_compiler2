@@ -1,6 +1,8 @@
 
 import java.util.Scanner;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.FileNotFoundException;
 
 
@@ -11,6 +13,8 @@ public class JackAnalyzer {
         //location of file to tokenize
         String path = args[0];
         File file = new File(path);
+        Path childPath = Paths.get(path);
+        Path parentPath = childPath.getParent();
         String name = "";
 
 
@@ -36,9 +40,9 @@ public class JackAnalyzer {
             //finding name
             name = file.getName();
             name = name.substring(0, name.length() - 5);
-            path = file.getParentFile().getName();
+            
             //compiling and writing file
-            JackAnalyzer.writeCompileFile(file, name, path);
+           JackAnalyzer.writeCompileFile(file, name, parentPath.toString());
         }
                                     
         return;

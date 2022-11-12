@@ -8,6 +8,7 @@ public class CompilationEngine {
 
     public JackTokenizer tokenizer;
     public LinkedList<String> tags;
+    public SymbolTable classTable;
 
 
 
@@ -65,6 +66,7 @@ public class CompilationEngine {
     //class desc consists of class tag followed by className followed by "{" followed by classVarDesc* followed by subroutineDec* followed by "}" followed class close tag
     public void compileClass() {
         String currentToken;
+
         //prints class open tag
         tags.add("<class>");
         
@@ -74,6 +76,9 @@ public class CompilationEngine {
 
         //writing className which is an identifier
         currentToken = tokenizer.advance();
+
+        //creating symbol table with type class
+        this.classTable = new SymbolTable(currentToken, "CLASS");
         tags.add(CompilationEngine.printLexicalUnit(currentToken));
 
         //writing  '{' symbol and associated xml tags
@@ -82,7 +87,7 @@ public class CompilationEngine {
 
         this.compileclassVarDesc();
         String nextToken = tokenizer.tokens.peekFirst();
-        
+        this.classTable.printClassTable();
         while (!nextToken.equals("}")) {
             this.compileSubroutine();
             nextToken = tokenizer.tokens.peekFirst();
@@ -94,17 +99,20 @@ public class CompilationEngine {
     
         //adding class closing tag, eof after this
         tags.add("</class>");
-
         return;
     }
 
     public void compileclassVarDesc() {
         //gets next token
         String currentToken = tokenizer.advance();
+        String kind, type, name;
 
         //continues while there are further class variable to declare
         while (currentToken.equals("static") || currentToken.equals("field")) {
-            
+
+            //determines variable kind for adding var to symbol table
+            kind = currentToken;
+
             //adds classVarDec tag
             tags.add("<classVarDec>");
 
@@ -115,10 +123,16 @@ public class CompilationEngine {
             currentToken = tokenizer.advance();
             tags.add(CompilationEngine.printLexicalUnit(currentToken));
 
+            //gets variable type for symbol table
+            type = currentToken;
+
+
             //adds varName - there could be many varNames of a certain type - loops here till all are added
             while (!currentToken.equals(";")) {
                 currentToken = tokenizer.advance();
+                name = currentToken;
                 tags.add(CompilationEngine.printLexicalUnit(currentToken));
+                classTable.classDefine(name, type, kind);
                 
                 //if token is comma, dump and get another otherwise keep going
                 currentToken = tokenizer.advance();
@@ -137,12 +151,17 @@ public class CompilationEngine {
     }
 
     public void compileSubroutine() {
+
+        //clears symbol table at subroutine level
+        classTable.startSubroutine();
+
         //first thing adds subroutine declarations tag
         tags.add("<subroutineDec>");
 
         //gets function type and adds it to tags
         String functionType = tokenizer.advance();
         tags.add(CompilationEngine.printLexicalUnit(functionType));
+
 
         //gets return type and addds it to tags  - can be int, boolean, char or className
         String functionReturnType = tokenizer.advance();
@@ -165,9 +184,16 @@ public class CompilationEngine {
 
 
         tags.add("</subroutineDec>");
+        classTable.printSubroutineTable(functionName);
     }
 
     public void compileParameterList() {
+
+        //clearing the subroutine symbol table for this new subroutine
+        //classTable.startSubroutine();
+
+        //declaring variable(s) to store var in symbol table
+        String kind = "arg";
 
         tags.add("<parameterList>");
         String nextToken = tokenizer.tokens.peekFirst();
@@ -179,8 +205,12 @@ public class CompilationEngine {
 
             // gets parameter type and name 
             parameterType = tokenizer.advance();
-            
             parameterName = tokenizer.advance();
+
+
+            //adds parameter to subroutine define as argument list
+            classTable.subroutineDefine(parameterName, parameterType, kind);
+         
             
 
             // adds parameter name and type to tags
@@ -230,6 +260,8 @@ public class CompilationEngine {
     }
 
     public void compileVarDec() {
+
+        String kind = "var";
         String symbol = "";
         // adding vardec open tag
         tags.add("<varDec>");
@@ -247,7 +279,9 @@ public class CompilationEngine {
                 // adding varname tag
                 String varName = tokenizer.advance();
                 tags.add(CompilationEngine.printLexicalUnit(varName));
-
+                
+                //adding variable to symbol table with subroutine scope
+                classTable.subroutineDefine(varName, type, kind);
 
                 //getting next token, either will be comma or semicolon
                 symbol = tokenizer.tokens.peekFirst();
@@ -263,7 +297,6 @@ public class CompilationEngine {
         
         // adding vardec close tag
         tags.add("</varDec>");
-
         return;
     }
 
@@ -676,9 +709,9 @@ public class CompilationEngine {
 
     public void writeFile(String name, String path) {
         String currentTag = "";
+        System.out.println(path + "\\" + name + ".xml");
         try {
             FileWriter file = new FileWriter(path + "\\" + name + ".xml");
-
             while (tags.peekFirst() != null) {
                 currentTag = tags.pop();
                 file.write(currentTag);
