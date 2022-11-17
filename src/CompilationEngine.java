@@ -158,9 +158,15 @@ public class CompilationEngine {
         //first thing adds subroutine declarations tag
         tags.add("<subroutineDec>");
 
-        //gets function type and adds it to tags
-        String functionType = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(functionType));
+        //gets function type and adds it to tags (can be staic or method)
+        String staticOrMethod = tokenizer.advance();
+        String classKind = classTable.name;
+        tags.add(CompilationEngine.printLexicalUnit(staticOrMethod));
+
+        System.out.println("Should be static, method or constructor:  " + staticOrMethod );
+        if (staticOrMethod.equals("method") || staticOrMethod.equals("constructor")){
+            classTable.subroutineDefine("this", classKind,"arg");
+        }
 
 
         //gets return type and addds it to tags  - can be int, boolean, char or className
