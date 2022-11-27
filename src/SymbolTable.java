@@ -12,7 +12,7 @@ class SymbolTable {
     HashMap<String, String> subroutineKind;
     HashMap<String, Integer> subroutineIndex;
 
-    private static final Set<String> KINDS = Set.of("static", "field", "arg", "var");
+    private static final Set<String> KINDS = Set.of("static", "field", "argument", "local");
     
 
     public static void main(String[] args) {
@@ -75,6 +75,8 @@ class SymbolTable {
        
        return kindCount;
      }
+
+
      public int subroutineVarCount(String kind){
     
       int kindCount = 0;
@@ -84,7 +86,7 @@ class SymbolTable {
            kindCount++;
         }
       }
-      
+      //System.out.println("Number Times Counted: " + kindCount);
       return kindCount;
     }
 

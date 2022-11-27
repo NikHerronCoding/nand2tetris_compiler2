@@ -1,0 +1,14 @@
+function Main.main 4
+push constant 22
+pop local 0
+push constant 44
+pop local 1
+push local 0
+push local 1
+pop local 2
+push local 0
+push local 1
+push local 2
+pop local 3
+push local 3
+return

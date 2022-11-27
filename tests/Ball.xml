@@ -1,0 +1,1868 @@
+<class>
+<keyword> class </keyword>
+<identifier>name: Ball category: CLASS NAME kind:CLASS index: NO INDEX</identifier>
+<symbol> { </symbol>
+<classVarDec>
+<keyword> field </keyword>
+<keyword> int </keyword>
+<identifier>name: x category: CLASS VARIABLE kind:field index: 0</identifier>
+<symbol> , </symbol>
+<identifier>name: y category: CLASS VARIABLE kind:field index: 1</identifier>
+<symbol> ; </symbol>
+</classVarDec>
+<classVarDec>
+<keyword> field </keyword>
+<keyword> int </keyword>
+<identifier>name: lengthx category: CLASS VARIABLE kind:field index: 2</identifier>
+<symbol> , </symbol>
+<identifier>name: lengthy category: CLASS VARIABLE kind:field index: 3</identifier>
+<symbol> ; </symbol>
+</classVarDec>
+<classVarDec>
+<keyword> field </keyword>
+<keyword> int </keyword>
+<identifier>name: d category: CLASS VARIABLE kind:field index: 4</identifier>
+<symbol> , </symbol>
+<identifier>name: straightD category: CLASS VARIABLE kind:field index: 5</identifier>
+<symbol> , </symbol>
+<identifier>name: diagonalD category: CLASS VARIABLE kind:field index: 6</identifier>
+<symbol> ; </symbol>
+</classVarDec>
+<classVarDec>
+<keyword> field </keyword>
+<keyword> boolean </keyword>
+<identifier>name: invert category: CLASS VARIABLE kind:field index: 7</identifier>
+<symbol> , </symbol>
+<identifier>name: positivex category: CLASS VARIABLE kind:field index: 8</identifier>
+<symbol> , </symbol>
+<identifier>name: positivey category: CLASS VARIABLE kind:field index: 9</identifier>
+<symbol> ; </symbol>
+</classVarDec>
+<classVarDec>
+<keyword> field </keyword>
+<keyword> int </keyword>
+<identifier>name: leftWall category: CLASS VARIABLE kind:field index: 10</identifier>
+<symbol> , </symbol>
+<identifier>name: rightWall category: CLASS VARIABLE kind:field index: 11</identifier>
+<symbol> , </symbol>
+<identifier>name: topWall category: CLASS VARIABLE kind:field index: 12</identifier>
+<symbol> , </symbol>
+<identifier>name: bottomWall category: CLASS VARIABLE kind:field index: 13</identifier>
+<symbol> ; </symbol>
+</classVarDec>
+<classVarDec>
+<keyword> field </keyword>
+<keyword> int </keyword>
+<identifier>name: wall category: CLASS VARIABLE kind:field index: 14</identifier>
+<symbol> ; </symbol>
+</classVarDec>
+<subroutineDec>
+<keyword> constructor </keyword>
+<identifier> Ball </identifier>
+<identifier>name: new category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+<keyword> int </keyword>
+<identifier> Ax </identifier>
+<identifier>name: Ax category: int kind:arg index: 1</identifier>
+<symbol> , </symbol>
+<keyword> int </keyword>
+<identifier> Ay </identifier>
+<identifier>name: Ay category: int kind:arg index: 2</identifier>
+<symbol> , </symbol>
+<keyword> int </keyword>
+<identifier> AleftWall </identifier>
+<identifier>name: AleftWall category: int kind:arg index: 3</identifier>
+<symbol> , </symbol>
+<keyword> int </keyword>
+<identifier> ArightWall </identifier>
+<identifier>name: ArightWall category: int kind:arg index: 4</identifier>
+<symbol> , </symbol>
+<keyword> int </keyword>
+<identifier> AtopWall </identifier>
+<identifier>name: AtopWall category: int kind:arg index: 5</identifier>
+<symbol> , </symbol>
+<keyword> int </keyword>
+<identifier> AbottomWall </identifier>
+<identifier>name: AbottomWall category: int kind:arg index: 6</identifier>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: x  Variable Type: int  Variable Kind: field  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> Ax </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: y  Variable Type: int  Variable Kind: field  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> Ay </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: leftWall  Variable Type: int  Variable Kind: field  Variable Index: 10</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> AleftWall </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: rightWall  Variable Type: int  Variable Kind: field  Variable Index: 11</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> ArightWall </identifier>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 6 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: topWall  Variable Type: int  Variable Kind: field  Variable Index: 12</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> AtopWall </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: bottomWall  Variable Type: int  Variable Kind: field  Variable Index: 13</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> AbottomWall </identifier>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 6 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: wall  Variable Type: int  Variable Kind: field  Variable Index: 14</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 0 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier> show </identifier>
+<symbol> ( </symbol>
+<expressionList>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<expression>
+<term>
+<keyword> this </keyword>
+</term>
+</expression>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier>name: dispose category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier> Memory </identifier>
+<symbol> . </symbol>
+<identifier> deAlloc </identifier>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> this </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier>name: show category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> true </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier> draw </identifier>
+<symbol> ( </symbol>
+<expressionList>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier>name: hide category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> false </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier> draw </identifier>
+<symbol> ( </symbol>
+<expressionList>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier>name: draw category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 5 </integerConstant>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 5 </integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> int </keyword>
+<identifier>name: getLeft category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<returnStatement>
+<keyword> return </keyword>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> int </keyword>
+<identifier>name: getRight category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<returnStatement>
+<keyword> return </keyword>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 5 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier>name: setDestination category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+<keyword> int </keyword>
+<identifier> destx </identifier>
+<identifier>name: destx category: int kind:arg index: 1</identifier>
+<symbol> , </symbol>
+<keyword> int </keyword>
+<identifier> desty </identifier>
+<identifier>name: desty category: int kind:arg index: 2</identifier>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<varDec>
+<keyword> var </keyword>
+<keyword> int </keyword>
+<identifier>name: dx category: local kind:var index: 0</identifier>
+<symbol> , </symbol>
+<identifier>name: dy category: local kind:var index: 1</identifier>
+<symbol> , </symbol>
+<identifier>name: temp category: local kind:var index: 2</identifier>
+<symbol> ; </symbol>
+</varDec>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: lengthx  Variable Type: int  Variable Kind: field  Variable Index: 2</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> destx </identifier>
+</term>
+<symbol> - </symbol>
+<term>
+<identifier> x </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: lengthy  Variable Type: int  Variable Kind: field  Variable Index: 3</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> desty </identifier>
+</term>
+<symbol> - </symbol>
+<term>
+<identifier> y </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: dx  Variable Type: int  Variable Kind: var  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> Math </identifier>
+<symbol> . </symbol>
+<identifier> abs </identifier>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier> lengthx </identifier>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: dy  Variable Type: int  Variable Kind: var  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> Math </identifier>
+<symbol> . </symbol>
+<identifier> abs </identifier>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier> lengthy </identifier>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: invert  Variable Type: boolean  Variable Kind: field  Variable Index: 7</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> dx </identifier>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<identifier> dy </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> invert </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: temp  Variable Type: int  Variable Kind: var  Variable Index: 2</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> dx </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: dx  Variable Type: int  Variable Kind: var  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> dy </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: dy  Variable Type: int  Variable Kind: var  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> temp </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: positivex  Variable Type: boolean  Variable Kind: field  Variable Index: 8</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<identifier> desty </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: positivey  Variable Type: boolean  Variable Kind: field  Variable Index: 9</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<identifier> destx </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: positivex  Variable Type: boolean  Variable Kind: field  Variable Index: 8</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<identifier> destx </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: positivey  Variable Type: boolean  Variable Kind: field  Variable Index: 9</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<identifier> desty </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: d  Variable Type: int  Variable Kind: field  Variable Index: 4</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+<symbol> * </symbol>
+<term>
+<identifier> dy </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> - </symbol>
+<term>
+<identifier> dx </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: straightD  Variable Type: int  Variable Kind: field  Variable Index: 5</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+<symbol> * </symbol>
+<term>
+<identifier> dy </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: diagonalD  Variable Type: int  Variable Kind: field  Variable Index: 6</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+<symbol> * </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> dy </identifier>
+</term>
+<symbol> - </symbol>
+<term>
+<identifier> dx </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> int </keyword>
+<identifier>name: move category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier> hide </identifier>
+<symbol> ( </symbol>
+<expressionList>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> d </identifier>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<integerConstant> 0 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: d  Variable Type: int  Variable Kind: field  Variable Index: 4</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> d </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier> straightD </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: d  Variable Type: int  Variable Kind: field  Variable Index: 4</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> d </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier> diagonalD </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> positivey </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> invert </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: x  Variable Type: int  Variable Kind: field  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 4 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: y  Variable Type: int  Variable Kind: field  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 4 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> invert </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: x  Variable Type: int  Variable Kind: field  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 4 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: y  Variable Type: int  Variable Kind: field  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 4 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> positivex </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> invert </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: y  Variable Type: int  Variable Kind: field  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 4 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: x  Variable Type: int  Variable Kind: field  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 4 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> invert </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: y  Variable Type: int  Variable Kind: field  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 4 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: x  Variable Type: int  Variable Kind: field  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 4 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ~ </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> &gt; </symbol>
+<term>
+<identifier> leftWall </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: wall  Variable Type: int  Variable Kind: field  Variable Index: 14</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: x  Variable Type: int  Variable Kind: field  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> leftWall </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ~ </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<identifier> rightWall </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: wall  Variable Type: int  Variable Kind: field  Variable Index: 14</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: x  Variable Type: int  Variable Kind: field  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> rightWall </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ~ </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> &gt; </symbol>
+<term>
+<identifier> topWall </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: wall  Variable Type: int  Variable Kind: field  Variable Index: 14</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 3 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: y  Variable Type: int  Variable Kind: field  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> topWall </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ~ </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<identifier> bottomWall </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: wall  Variable Type: int  Variable Kind: field  Variable Index: 14</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 4 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: y  Variable Type: int  Variable Kind: field  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> bottomWall </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier> show </identifier>
+<symbol> ( </symbol>
+<expressionList>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<expression>
+<term>
+<identifier> wall </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier>name: bounce category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+<keyword> int </keyword>
+<identifier> bouncingDirection </identifier>
+<identifier>name: bouncingDirection category: int kind:arg index: 1</identifier>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<varDec>
+<keyword> var </keyword>
+<keyword> int </keyword>
+<identifier>name: newx category: local kind:var index: 0</identifier>
+<symbol> , </symbol>
+<identifier>name: newy category: local kind:var index: 1</identifier>
+<symbol> , </symbol>
+<identifier>name: divLengthx category: local kind:var index: 2</identifier>
+<symbol> , </symbol>
+<identifier>name: divLengthy category: local kind:var index: 3</identifier>
+<symbol> , </symbol>
+<identifier>name: factor category: local kind:var index: 4</identifier>
+<symbol> ; </symbol>
+</varDec>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: divLengthx  Variable Type: int  Variable Kind: var  Variable Index: 2</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> lengthx </identifier>
+</term>
+<symbol> / </symbol>
+<term>
+<integerConstant> 10 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: divLengthy  Variable Type: int  Variable Kind: var  Variable Index: 3</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> lengthy </identifier>
+</term>
+<symbol> / </symbol>
+<term>
+<integerConstant> 10 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> bouncingDirection </identifier>
+</term>
+<symbol> = </symbol>
+<term>
+<integerConstant> 0 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: factor  Variable Type: int  Variable Kind: var  Variable Index: 4</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 10 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ~ </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> lengthx </identifier>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<integerConstant> 0 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> &amp; </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> bouncingDirection </identifier>
+</term>
+<symbol> = </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> | </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> lengthx </identifier>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<integerConstant> 0 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> &amp; </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> bouncingDirection </identifier>
+</term>
+<symbol> = </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: factor  Variable Type: int  Variable Kind: var  Variable Index: 4</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 20 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: factor  Variable Type: int  Variable Kind: var  Variable Index: 4</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 5 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> wall </identifier>
+</term>
+<symbol> = </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newx  Variable Type: int  Variable Kind: var  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 506 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newy  Variable Type: int  Variable Kind: var  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> divLengthy </identifier>
+</term>
+<symbol> * </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 50 </integerConstant>
+</term>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> / </symbol>
+<term>
+<identifier> divLengthx </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newy  Variable Type: int  Variable Kind: var  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> newy </identifier>
+</term>
+<symbol> * </symbol>
+<term>
+<identifier> factor </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> wall </identifier>
+</term>
+<symbol> = </symbol>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newx  Variable Type: int  Variable Kind: var  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 0 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newy  Variable Type: int  Variable Kind: var  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> divLengthy </identifier>
+</term>
+<symbol> * </symbol>
+<term>
+<integerConstant> 50 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> / </symbol>
+<term>
+<identifier> divLengthx </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newy  Variable Type: int  Variable Kind: var  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> y </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> newy </identifier>
+</term>
+<symbol> * </symbol>
+<term>
+<identifier> factor </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> wall </identifier>
+</term>
+<symbol> = </symbol>
+<term>
+<integerConstant> 3 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newy  Variable Type: int  Variable Kind: var  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 250 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newx  Variable Type: int  Variable Kind: var  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> divLengthx </identifier>
+</term>
+<symbol> * </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 25 </integerConstant>
+</term>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> / </symbol>
+<term>
+<identifier> divLengthy </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newx  Variable Type: int  Variable Kind: var  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> newx </identifier>
+</term>
+<symbol> * </symbol>
+<term>
+<identifier> factor </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+<keyword> else </keyword>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newy  Variable Type: int  Variable Kind: var  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 0 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newx  Variable Type: int  Variable Kind: var  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> divLengthx </identifier>
+</term>
+<symbol> * </symbol>
+<term>
+<integerConstant> 25 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> / </symbol>
+<term>
+<identifier> divLengthy </identifier>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: newx  Variable Type: int  Variable Kind: var  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> x </identifier>
+</term>
+<symbol> + </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier> newx </identifier>
+</term>
+<symbol> * </symbol>
+<term>
+<identifier> factor </identifier>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier> setDestination </identifier>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier> newx </identifier>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier> newy </identifier>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<symbol> } </symbol>
+</class>

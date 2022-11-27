@@ -1,0 +1,15 @@
+class Main{
+
+    function void main() {
+        var int a,b,c,d;
+        let a = 22;
+        let b = 44;
+        let c = Adder.adderTWO(a,b);
+        let d = Adder.adderTHREE(a,b,c);
+
+
+        do Output.printInt(d);
+        return;
+    }
+
+}

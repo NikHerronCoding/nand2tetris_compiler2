@@ -1,0 +1,25 @@
+function Adder.adderTWO 1
+push argument 0
+push argument 1
+add
+pop local 0
+push local 0
+return
+function Adder.adderTHREE 1
+push argument 0
+push argument 1
+add
+push argument 2
+add
+pop local 0
+push local 0
+return
+function Adder.adderTHREEParenthese 1
+push argument 0
+push argument 1
+push argument 2
+add
+add
+pop local 0
+push local 0
+return

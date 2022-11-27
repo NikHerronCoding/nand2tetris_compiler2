@@ -73,8 +73,9 @@ public class JackAnalyzer {
         compiled.compileClass();
 
         //writing to file
-        compiled.writeFile(name, path);
-
+        compiled.writeXMLFile(name, path);
+        compiled.writeVMFile(name, path);
+        
         return;
 
     }

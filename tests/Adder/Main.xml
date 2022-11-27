@@ -1,0 +1,137 @@
+<class>
+<keyword> class </keyword>
+<identifier>name: Main category: CLASS NAME kind:CLASS index: NO INDEX</identifier>
+<symbol> { </symbol>
+<subroutineDec>
+<keyword> function </keyword>
+<keyword> void </keyword>
+<identifier>name: main category: Function Name kind:Subroutine index: N/A</identifier>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<varDec>
+<keyword> var </keyword>
+<keyword> int </keyword>
+<identifier>name: a category: local kind:local index: 0</identifier>
+<symbol> , </symbol>
+<identifier>name: b category: local kind:local index: 1</identifier>
+<symbol> , </symbol>
+<identifier>name: c category: local kind:local index: 2</identifier>
+<symbol> , </symbol>
+<identifier>name: d category: local kind:local index: 3</identifier>
+<symbol> ; </symbol>
+</varDec>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: a  Variable Type: int  Variable Kind: local  Variable Index: 0</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 22 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: b  Variable Type: int  Variable Kind: local  Variable Index: 1</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<integerConstant> 44 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: c  Variable Type: int  Variable Kind: local  Variable Index: 2</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> Adder </identifier>
+<symbol> . </symbol>
+<identifier> adderTWO </identifier>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier> a </identifier>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier> b </identifier>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier> VARIABLE NAME: d  Variable Type: int  Variable Kind: local  Variable Index: 3</identifier>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier> Adder </identifier>
+<symbol> . </symbol>
+<identifier> adderTHREE </identifier>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier> a </identifier>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier> b </identifier>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier> c </identifier>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier> Output </identifier>
+<symbol> . </symbol>
+<identifier> printInt </identifier>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier> d </identifier>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<symbol> } </symbol>
+</class>

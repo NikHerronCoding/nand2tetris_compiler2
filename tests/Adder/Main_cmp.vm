@@ -1,0 +1,19 @@
+function Main.main 4
+push constant 22
+pop local 0
+push constant 44
+pop local 1
+push local 0
+push local 1
+call Adder.adderTWO 2
+pop local 2
+push local 0
+push local 1
+push local 2
+call Adder.adderTHREE 3
+pop local 3
+push local 3
+call Output.printInt 1
+pop temp 0
+push constant 0
+return

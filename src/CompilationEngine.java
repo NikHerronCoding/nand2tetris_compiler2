@@ -3,20 +3,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.HashSet;
+import java.util.HashMap;
 
 public class CompilationEngine {
 
     public JackTokenizer tokenizer;
     public LinkedList<String> tags;
     public SymbolTable classTable;
-
+    public VMWriter vmWriter;
 
 
     public CompilationEngine(JackTokenizer jackTokenizer) {
         this.tokenizer = jackTokenizer;
+        vmWriter = new VMWriter();
         this.tags = new LinkedList<String>();
-
     }
+
     //in the case that you need to get the xml output for a lexical element, they can be output by this
     public static String printLexicalUnit(String token) {
         String openTag = "";
@@ -51,6 +53,16 @@ public class CompilationEngine {
         return openTag + " " + token + " " + closeTag;
     }
 
+    public static String printIdentifier(String name, String category, String kind, String index) {
+        String openTag = "<identifier>";
+        String closeTag = "</identifier>";
+
+        //putting the info all into one string to add to tags
+        String phrase = openTag + "name: " + name + " category: " + category + " kind:" + kind + " index: " + index + closeTag;
+
+        return phrase;
+    }
+
     public static String symbolTag(String token) {
         if (token.equals("<")) {
             return "&lt;";
@@ -79,7 +91,7 @@ public class CompilationEngine {
 
         //creating symbol table with type class
         this.classTable = new SymbolTable(currentToken, "CLASS");
-        tags.add(CompilationEngine.printLexicalUnit(currentToken));
+        tags.add(CompilationEngine.printIdentifier(currentToken, "CLASS NAME", "CLASS", "NO INDEX"));
 
         //writing  '{' symbol and associated xml tags
         currentToken = tokenizer.advance();
@@ -105,7 +117,7 @@ public class CompilationEngine {
     public void compileclassVarDesc() {
         //gets next token
         String currentToken = tokenizer.advance();
-        String kind, type, name;
+        String kind, type, name, varIndex;
 
         //continues while there are further class variable to declare
         while (currentToken.equals("static") || currentToken.equals("field")) {
@@ -131,8 +143,10 @@ public class CompilationEngine {
             while (!currentToken.equals(";")) {
                 currentToken = tokenizer.advance();
                 name = currentToken;
-                tags.add(CompilationEngine.printLexicalUnit(currentToken));
                 classTable.classDefine(name, type, kind);
+                varIndex = classTable.classIndex.get(name).toString();
+                tags.add(CompilationEngine.printIdentifier(name, "CLASS VARIABLE", kind, varIndex));
+                
                 
                 //if token is comma, dump and get another otherwise keep going
                 currentToken = tokenizer.advance();
@@ -152,41 +166,48 @@ public class CompilationEngine {
 
     public void compileSubroutine() {
 
+        String className = classTable.name;
+        String functionName = "";
+        String vmFunctionName;
+
         //clears symbol table at subroutine level
         classTable.startSubroutine();
 
-        //first thing adds subroutine declarations tag
+        //first tag adds subroutine declarations tag
         tags.add("<subroutineDec>");
 
         //gets function type and adds it to tags (can be staic or method)
         String staticOrMethod = tokenizer.advance();
         String classKind = classTable.name;
         tags.add(CompilationEngine.printLexicalUnit(staticOrMethod));
+        
 
+        //add THIS to arg 0 if method or constructor
         System.out.println("Should be static, method or constructor:  " + staticOrMethod );
         if (staticOrMethod.equals("method") || staticOrMethod.equals("constructor")){
-            classTable.subroutineDefine("this", classKind,"arg");
+            classTable.subroutineDefine("this", classKind,"argument");
         }
-
 
         //gets return type and addds it to tags  - can be int, boolean, char or className
         String functionReturnType = tokenizer.advance();
         tags.add(CompilationEngine.printLexicalUnit(functionReturnType));
 
         //gets function name and adds it to tags must be identifier so ez
-        String functionName = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(functionName));
+        functionName = tokenizer.advance();
+        vmFunctionName = className + "." + functionName;
+        tags.add(CompilationEngine.printIdentifier(functionName, "Function Name", "Subroutine", "N/A"));
 
         //gets ( symbol and adds it to tags
         String symbol = tokenizer.advance();
         tags.add(CompilationEngine.printLexicalUnit(symbol));
 
+        //involves compilation of the arguments in function
         this.compileParameterList();
         
         // gets ) symbol and adds it to tags
         symbol = tokenizer.advance();
         tags.add(CompilationEngine.printLexicalUnit(symbol));
-        this.compileSubroutineBody();
+        this.compileSubroutineBody(vmFunctionName);
 
 
         tags.add("</subroutineDec>");
@@ -199,12 +220,13 @@ public class CompilationEngine {
         //classTable.startSubroutine();
 
         //declaring variable(s) to store var in symbol table
-        String kind = "arg";
+        String kind = "argument";
 
         tags.add("<parameterList>");
         String nextToken = tokenizer.tokens.peekFirst();
         String parameterType = "";
         String parameterName = "";
+        String varIndex;
 
         //while parameters exist
         while (!nextToken.equals(")")) {
@@ -216,12 +238,14 @@ public class CompilationEngine {
 
             //adds parameter to subroutine define as argument list
             classTable.subroutineDefine(parameterName, parameterType, kind);
+            varIndex = classTable.subroutineIndex.get(parameterName).toString();
          
             
 
             // adds parameter name and type to tags
             tags.add(CompilationEngine.printLexicalUnit(parameterType));
             tags.add(CompilationEngine.printLexicalUnit(parameterName));
+            tags.add(CompilationEngine.printIdentifier(parameterName, parameterType, "arg", varIndex));
 
             //gets next token comma indicates keep going, also gotta add , to 
             nextToken = tokenizer.tokens.peekFirst();
@@ -235,7 +259,8 @@ public class CompilationEngine {
         tags.add("</parameterList>");
     }
 
-    public void compileSubroutineBody() {
+    public void compileSubroutineBody(String vmFunctionName) {
+        int numLocalVars = 0;
 
         //adding subroutineBody opening tag
         tags.add("<subroutineBody>");
@@ -250,6 +275,12 @@ public class CompilationEngine {
             if (currentToken.equals("var")) {
                 this.compileVarDec();    
             } else {
+                //writing vm function declaration code here becuase we finally know how many local variables exist!
+                numLocalVars = classTable.subroutineVarCount("local"); //need to know how many local vars there are
+                vmWriter.writeFunction(vmFunctionName, numLocalVars);
+
+
+                //compiling rest of statements within the subroutine
                 this.compileStatements();
                 break;
             }
@@ -264,11 +295,11 @@ public class CompilationEngine {
         //adding subroutineBody opening tag
         tags.add("</subroutineBody>");
     }
-
+    //returns the num of local
     public void compileVarDec() {
-
-        String kind = "var";
+        String kind = "local";
         String symbol = "";
+        String varIndex;
         // adding vardec open tag
         tags.add("<varDec>");
         
@@ -282,12 +313,18 @@ public class CompilationEngine {
 
             while (!symbol.equals(";")) {
 
-                // adding varname tag
+                //getting varname 
                 String varName = tokenizer.advance();
-                tags.add(CompilationEngine.printLexicalUnit(varName));
-                
+
                 //adding variable to symbol table with subroutine scope
                 classTable.subroutineDefine(varName, type, kind);
+                varIndex = classTable.subroutineIndex.get(varName).toString();
+
+                //adding tag
+                tags.add(CompilationEngine.printIdentifier(varName, "local", kind, varIndex ));
+                
+                //adding variable to symbol table with subroutine scope
+                //classTable.subroutineDefine(varName, type, kind);
 
                 //getting next token, either will be comma or semicolon
                 symbol = tokenizer.tokens.peekFirst();
@@ -463,9 +500,15 @@ public class CompilationEngine {
         //adding closing returnStatment tags
         tags.add("</returnStatement>");
 
+        //vm code here
+        vmWriter.writeReturn();
+
     }
 
     public void compileLetStatement() {
+
+        String varName, varType, varKind, varIndex, phrase;
+
         //adding letStatement tags
         tags.add("<letStatement>");
 
@@ -475,8 +518,24 @@ public class CompilationEngine {
         tags.add(CompilationEngine.printLexicalUnit(keyword));
 
         //adding varName identifier tag
-        String varName = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(varName));
+        varName = tokenizer.advance();
+        System.out.println("Compiling let, first var is: " + varName);
+
+        //getting var type kind and index, searches subroutine scope first then class level
+
+        if (classTable.subroutineType.containsKey(varName)) {
+            varType = classTable.subroutineType.get(varName);
+            varKind = classTable.subroutineKind.get(varName);
+            varIndex = classTable.subroutineIndex.get(varName).toString();
+        } else {
+            varType = classTable.classType.get(varName);
+            varKind = classTable.classKind.get(varName);
+            varIndex = classTable.classIndex.get(varName).toString();
+        }
+        
+        //
+        phrase = "<identifier> VARIABLE NAME: " + varName + "  Variable Type: " +varType + "  Variable Kind: " + varKind + "  Variable Index: "+ varIndex + "</identifier>";
+        tags.add(phrase);
 
 
         //adding possible symbol [
@@ -496,8 +555,11 @@ public class CompilationEngine {
         symbol = tokenizer.advance();
         tags.add(CompilationEngine.printLexicalUnit(symbol));
 
-        //compiling expression
+        //compiling expression 
         this.compileExpression();
+
+        //VM CODE HERE - POPS VALUE TO DESIRED MEMORY SEGMENT LOCATION
+        vmWriter.writePop(varKind, varIndex);
 
         //adding semi colon to signify end of statement
         symbol = tokenizer.advance();
@@ -511,18 +573,35 @@ public class CompilationEngine {
 
     public void compileExpression() {
         HashSet<String> operators = new HashSet<String>();
+        HashMap<String, String> operatorMap = new HashMap<String,String>();
+        String operator, vmTerm;
         operators.add("+");operators.add("-");operators.add("*");
         operators.add("/");operators.add("&");operators.add("|");
         operators.add("<");operators.add(">");operators.add("=");
+
+        operatorMap.put("+", "add");
 
         tags.add("<expression>");
 
         this.compileTerm();
 
         while (operators.contains(tokenizer.tokens.peekFirst())) {
-            tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print the operator symbol
+            operator = tokenizer.advance();
+            tags.add(CompilationEngine.printLexicalUnit(operator)); // should print the operator symbol
+
+
+            //continue compilation of next term (if operator exists another term must exist)
             this.compileTerm();
+
+            //adding vm code for operator here - converstion from infix to postfix so vm arithmetic is after term compilation
+            vmTerm = operatorMap.get(operator);
+            vmWriter.writeArithmetic(vmTerm);
         }
+
+        
+
+
+        //adding final tag
         tags.add("</expression>");
     }
 
@@ -560,7 +639,12 @@ public class CompilationEngine {
     }
 
     public void compileIntegerConstant() {
-        tags.add("<integerConstant> " + tokenizer.advance() + " </integerConstant>");
+        String integerConstant = tokenizer.advance();
+        //tags for xml file
+        tags.add("<integerConstant> " + integerConstant + " </integerConstant>");
+
+        //vm code added here
+        vmWriter.writePush("constant", integerConstant);
     }
 
     public void compileStringConstant() {
@@ -609,7 +693,30 @@ public class CompilationEngine {
     }
 
     public void compileVarName() {
-        tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print varname with identifier tag
+
+        String varName = tokenizer.advance();
+        String varKind, varIndex;
+
+        if (classTable.subroutineType.containsKey(varName)) {
+            varKind = classTable.subroutineKind.get(varName);
+            varIndex = classTable.subroutineIndex.get(varName).toString();
+        } else {
+            varKind = classTable.classKind.get(varName);
+            varIndex = classTable.classIndex.get(varName).toString();
+        }
+
+
+
+        //xml tags here
+        System.out.println();
+        System.out.println("compiling: "+ varName);
+        tags.add(CompilationEngine.printLexicalUnit(varName)); // should print varname with identifier tag
+
+        //vmcode here
+        vmWriter.writePush(varKind, varIndex);
+        System.out.println("varname: " + varName + " kind: " + varKind + " index: " + varIndex);
+        
+        // if var name has indexing for an array must also compile here - will add SOON
         if (tokenizer.tokens.peekFirst().equals("[")) {
             tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print symbol [ with symbol tag
             this.compileExpression(); //should compile the expression within the brackets
@@ -713,7 +820,7 @@ public class CompilationEngine {
         }
     }
 
-    public void writeFile(String name, String path) {
+    public void writeXMLFile(String name, String path) {
         String currentTag = "";
         System.out.println(path + "\\" + name + ".xml");
         try {
@@ -730,6 +837,10 @@ public class CompilationEngine {
             System.out.println("FILE IO EXCEPTION IN FILE WRITE FUNCTION");
             e.printStackTrace();
         }
+    }
+
+    public void writeVMFile(String name, String path){
+        vmWriter.writeLines(name, path);
     }
 
     public static void main(String[] args) {

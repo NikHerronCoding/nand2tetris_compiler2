@@ -1,0 +1,24 @@
+//this is a test to see how the very basic functionality of the compiler works
+
+class Adder{
+
+    function int adderTWO(int a, int b) {
+        var int c;
+        let c = a + b;
+        return c;
+    }
+
+    function int adderTHREE(int a, int b, int c) {
+        var int d;
+        let d = a + b + c;
+        return d;
+    }
+
+    //added parenthese to change order of operations slightly
+    function int adderTHREEParenthese(int a, int b, int c) {
+        var int d;
+        let d = a + (b + c);
+        return d;
+    }
+
+}
