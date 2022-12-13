@@ -1,0 +1,27 @@
+class Keywords{
+
+    function bool trueTest(bool a){
+        var bool b;
+
+        let b = (a = true);
+
+        return b;
+    }
+
+    function bool falseTest(bool a){
+        var bool b;
+
+        let b = (a = false);
+
+        return b;
+    }
+
+    // function int nullTest(int a){
+    //     var int b;
+
+    //     let b = null;
+    //     let b = 6;
+    //     return b;
+    // }
+
+}

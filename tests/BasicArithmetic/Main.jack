@@ -1,0 +1,18 @@
+class Main{
+
+    function void main() {
+        var int a,b,c,d,e,f,g,h,i;
+        let a = 22;
+        let b = 44;
+        let c = BasicArithmetic.adderTWO(a,b);
+        let d = BasicArithmetic.adderTHREE(a,b,c);
+        let e = BasicArithmetic.multTHREE(a,b,c);
+        let f = BasicArithmetic.multTHREEParenthese(a,b,c);
+        let g = BasicArithmetic.divideTHREE(a,b,c);
+        let h = BasicArithmetic.subtractTHREE(a,b,c);
+
+        do Output.printInt(h);
+        return;
+    }
+
+}

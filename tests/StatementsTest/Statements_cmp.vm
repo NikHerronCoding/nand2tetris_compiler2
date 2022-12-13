@@ -1,0 +1,88 @@
+function Statements.letStatementTest 1
+push argument 0
+push argument 1
+add
+pop local 0
+push local 0
+return
+function Statements.doStatementTest 1
+push argument 0
+call Output.printInt 1
+pop temp 0
+push constant 0
+return
+function Statements.fullIfStatementTest 0
+push argument 0
+push argument 1
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 0
+return
+goto IF_END0
+label IF_FALSE0
+push argument 1
+return
+label IF_END0
+function Statements.DoubleIfStatementTest 0
+push argument 0
+push argument 1
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 0
+call Output.printInt 1
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push argument 1
+call Output.printInt 1
+pop temp 0
+label IF_END0
+push argument 0
+push argument 1
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push argument 0
+return
+goto IF_END1
+label IF_FALSE1
+push argument 1
+return
+label IF_END1
+function Statements.semiIfStatementTest 0
+push argument 0
+push argument 1
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 0
+return
+label IF_FALSE0
+push argument 1
+return
+function Statements.whileStatementTest 1
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push argument 0
+lt
+not
+if-goto WHILE_END0
+push local 0
+call Output.printInt 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

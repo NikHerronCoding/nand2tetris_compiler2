@@ -1,0 +1,21 @@
+class Urnary{
+
+    //testing for urnary negation
+    function bool urnaryNegation(bool a){
+        var int b;
+ 
+        let b = ~a;
+
+        return b;
+    }
+
+    //testing for urnary subtration
+    function int urnarySubtraction(int a){
+        var int b;
+ 
+        let b = -a;
+
+        return b;
+    }
+
+}

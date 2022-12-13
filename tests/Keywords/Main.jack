@@ -1,0 +1,23 @@
+class Main{
+
+
+    function void main(){
+        var bool a, x, y , z, q;
+        var int b;
+        var int c;
+
+        let a = true;
+        let q = false;
+        let b = 5;
+        let c = 6;
+
+        
+        let x = Keywords.trueTest(a);
+        let y = Keywords.falseTest(a);
+        // let z = Keywords.nullTest(b);
+
+        return;
+
+    }
+
+}

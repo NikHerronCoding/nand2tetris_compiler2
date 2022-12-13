@@ -73,13 +73,12 @@ public class JackAnalyzer {
         compiled.compileClass();
 
         //writing to file
-        compiled.writeXMLFile(name, path);
+        //compiled.writeXMLFile(name, path);
         compiled.writeVMFile(name, path);
         
         return;
 
     }
-
         // removes block comments, in lines comments and extra whitespace
         public static String formatAndRemoveComments(String text) {
             String outputText = "";

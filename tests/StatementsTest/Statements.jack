@@ -1,0 +1,67 @@
+
+
+//class built to test all statements. return statement included in every single function becuase it is the only statement that is required
+class Statements{
+
+    function int letStatementTest(int a, int b){
+        var int c;
+
+        let c = a + b;
+
+        return c;
+    }
+
+    function void doStatementTest(int a, int b){
+        var int c;
+
+        do Output.printInt(a);
+
+        return;
+    }
+
+    function int fullIfStatementTest(int a, int b){
+
+        if (a > b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+    function int DoubleIfStatementTest(int a, int b){
+        
+        if (a > b) {
+            do Output.printInt(a);
+        } else {
+            do Output.printInt(b);
+        }
+
+
+        if (a > b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+
+    function int semiIfStatementTest(int a, int b){
+
+        if (a > b) {
+            return a;
+        } 
+
+        return b;
+    }
+
+    function void whileStatementTest(int a) {
+        var int i;
+        let i = 0;
+
+        while (i < a) {
+            do Output.printInt(i);
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+}

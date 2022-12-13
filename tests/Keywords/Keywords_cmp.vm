@@ -1,0 +1,15 @@
+function Keywords.trueTest 1
+push argument 0
+push constant 0
+not
+eq
+pop local 0
+push local 0
+return
+function Keywords.falseTest 1
+push argument 0
+push constant 0
+eq
+pop local 0
+push local 0
+return

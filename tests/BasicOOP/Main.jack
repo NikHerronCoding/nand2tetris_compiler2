@@ -1,0 +1,16 @@
+class Main{
+
+    function void main(){
+        var int a;
+        var bool b;
+        var BasicOOP c;
+
+        let a = 5;
+        let b = true;
+        let c = BasicOOP.new(a,b);
+
+        do Output.printInt(a);
+
+        return;
+    }
+}

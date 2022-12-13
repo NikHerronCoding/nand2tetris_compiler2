@@ -8,59 +8,17 @@ import java.util.HashMap;
 public class CompilationEngine {
 
     public JackTokenizer tokenizer;
-    public LinkedList<String> tags;
     public SymbolTable classTable;
     public VMWriter vmWriter;
+    public int numIfs;
+    public int numWhiles;
 
 
     public CompilationEngine(JackTokenizer jackTokenizer) {
         this.tokenizer = jackTokenizer;
         vmWriter = new VMWriter();
-        this.tags = new LinkedList<String>();
-    }
-
-    //in the case that you need to get the xml output for a lexical element, they can be output by this
-    public static String printLexicalUnit(String token) {
-        String openTag = "";
-        String closeTag = "";
-        switch (JackTokenizer.tokenType(token)) {
-            case "SYMBOL":
-                token = CompilationEngine.symbolTag(token);
-                openTag = "<symbol>";
-                closeTag = "</symbol>";
-                break;
-            case "INT_CONST":
-                openTag = "<integerConstant>";
-                closeTag = "</integerConstant>";
-                break;
-            case "STRING_CONST":
-                openTag = "<stringConstant>";
-                closeTag = "</stringConstant>";
-                break;
-            case "KEYWORD":
-                openTag = "<keyword>";
-                closeTag = "</keyword>";
-                break;
-            case "IDENTIFIER":
-                openTag = "<identifier>";
-                closeTag = "</identifier>";
-                break;
-            default:
-                openTag = "<unidentified>";
-                closeTag = "</unidentified>";
-                break;
-        }
-        return openTag + " " + token + " " + closeTag;
-    }
-
-    public static String printIdentifier(String name, String category, String kind, String index) {
-        String openTag = "<identifier>";
-        String closeTag = "</identifier>";
-
-        //putting the info all into one string to add to tags
-        String phrase = openTag + "name: " + name + " category: " + category + " kind:" + kind + " index: " + index + closeTag;
-
-        return phrase;
+        numIfs = 0;
+        numWhiles = 0;
     }
 
     public static String symbolTag(String token) {
@@ -79,38 +37,29 @@ public class CompilationEngine {
     public void compileClass() {
         String currentToken;
 
-        //prints class open tag
-        tags.add("<class>");
-        
         //keyword class tag
         currentToken = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(currentToken));
 
         //writing className which is an identifier
         currentToken = tokenizer.advance();
 
         //creating symbol table with type class
         this.classTable = new SymbolTable(currentToken, "CLASS");
-        tags.add(CompilationEngine.printIdentifier(currentToken, "CLASS NAME", "CLASS", "NO INDEX"));
 
         //writing  '{' symbol and associated xml tags
         currentToken = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(currentToken));
 
         this.compileclassVarDesc();
         String nextToken = tokenizer.tokens.peekFirst();
-        this.classTable.printClassTable();
         while (!nextToken.equals("}")) {
             this.compileSubroutine();
             nextToken = tokenizer.tokens.peekFirst();
         }
 
-        //writing  '}' symbol and associated xml tags
+        //getting  '}' symbol and associated xml tags
         currentToken = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(currentToken));
     
         //adding class closing tag, eof after this
-        tags.add("</class>");
         return;
     }
 
@@ -125,19 +74,12 @@ public class CompilationEngine {
             //determines variable kind for adding var to symbol table
             kind = currentToken;
 
-            //adds classVarDec tag
-            tags.add("<classVarDec>");
-
-            //adds <keyword> static / field </keyword>
-            tags.add(CompilationEngine.printLexicalUnit(currentToken));
 
             //adds type - here type is an identifier
             currentToken = tokenizer.advance();
-            tags.add(CompilationEngine.printLexicalUnit(currentToken));
 
             //gets variable type for symbol table
             type = currentToken;
-
 
             //adds varName - there could be many varNames of a certain type - loops here till all are added
             while (!currentToken.equals(";")) {
@@ -145,19 +87,14 @@ public class CompilationEngine {
                 name = currentToken;
                 classTable.classDefine(name, type, kind);
                 varIndex = classTable.classIndex.get(name).toString();
-                tags.add(CompilationEngine.printIdentifier(name, "CLASS VARIABLE", kind, varIndex));
                 
                 
                 //if token is comma, dump and get another otherwise keep going
                 currentToken = tokenizer.advance();
                 if (currentToken.equals(",")) {
-                    tags.add(CompilationEngine.printLexicalUnit(currentToken));
                 }
             }
-            //shoudl print symbol tags with semicolon
-            tags.add(CompilationEngine.printLexicalUnit(currentToken));
 
-            tags.add("</classVarDec>");
             currentToken = tokenizer.advance();
         }
         tokenizer.tokens.addFirst(currentToken);
@@ -172,57 +109,44 @@ public class CompilationEngine {
 
         //clears symbol table at subroutine level
         classTable.startSubroutine();
-
-        //first tag adds subroutine declarations tag
-        tags.add("<subroutineDec>");
+        numIfs = 0;
+        numWhiles = 0;
 
         //gets function type and adds it to tags (can be staic or method)
-        String staticOrMethod = tokenizer.advance();
+        String subroutineType = tokenizer.advance();
         String classKind = classTable.name;
-        tags.add(CompilationEngine.printLexicalUnit(staticOrMethod));
-        
 
         //add THIS to arg 0 if method or constructor
-        System.out.println("Should be static, method or constructor:  " + staticOrMethod );
-        if (staticOrMethod.equals("method") || staticOrMethod.equals("constructor")){
+        if (subroutineType.equals("method")){
             classTable.subroutineDefine("this", classKind,"argument");
         }
 
         //gets return type and addds it to tags  - can be int, boolean, char or className
         String functionReturnType = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(functionReturnType));
 
         //gets function name and adds it to tags must be identifier so ez
         functionName = tokenizer.advance();
         vmFunctionName = className + "." + functionName;
-        tags.add(CompilationEngine.printIdentifier(functionName, "Function Name", "Subroutine", "N/A"));
 
         //gets ( symbol and adds it to tags
         String symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
 
         //involves compilation of the arguments in function
         this.compileParameterList();
         
         // gets ) symbol and adds it to tags
         symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
-        this.compileSubroutineBody(vmFunctionName);
+ 
+        this.compileSubroutineBody(vmFunctionName, subroutineType);
 
-
-        tags.add("</subroutineDec>");
-        classTable.printSubroutineTable(functionName);
     }
 
     public void compileParameterList() {
 
-        //clearing the subroutine symbol table for this new subroutine
-        //classTable.startSubroutine();
 
         //declaring variable(s) to store var in symbol table
         String kind = "argument";
 
-        tags.add("<parameterList>");
         String nextToken = tokenizer.tokens.peekFirst();
         String parameterType = "";
         String parameterName = "";
@@ -233,41 +157,28 @@ public class CompilationEngine {
 
             // gets parameter type and name 
             parameterType = tokenizer.advance();
+ 
             parameterName = tokenizer.advance();
 
 
             //adds parameter to subroutine define as argument list
             classTable.subroutineDefine(parameterName, parameterType, kind);
             varIndex = classTable.subroutineIndex.get(parameterName).toString();
-         
-            
-
-            // adds parameter name and type to tags
-            tags.add(CompilationEngine.printLexicalUnit(parameterType));
-            tags.add(CompilationEngine.printLexicalUnit(parameterName));
-            tags.add(CompilationEngine.printIdentifier(parameterName, parameterType, "arg", varIndex));
 
             //gets next token comma indicates keep going, also gotta add , to 
             nextToken = tokenizer.tokens.peekFirst();
-            if (nextToken.equals(",")) {
+            if (nextToken != null && nextToken.equals(",")) {
                 nextToken = tokenizer.advance();
-                tags.add(CompilationEngine.printLexicalUnit(nextToken));
             }
             
         }
-        
-        tags.add("</parameterList>");
     }
 
-    public void compileSubroutineBody(String vmFunctionName) {
+    public void compileSubroutineBody(String vmFunctionName, String subroutineType) {
         int numLocalVars = 0;
-
-        //adding subroutineBody opening tag
-        tags.add("<subroutineBody>");
 
         // adding open curly bracket to tags
         String symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
 
         String currentToken = tokenizer.tokens.peekFirst();
         
@@ -278,6 +189,29 @@ public class CompilationEngine {
                 //writing vm function declaration code here becuase we finally know how many local variables exist!
                 numLocalVars = classTable.subroutineVarCount("local"); //need to know how many local vars there are
                 vmWriter.writeFunction(vmFunctionName, numLocalVars);
+                    //compiling subroutine body. If subroutine is a method, then the first thing done need to be pushing arg 0 to pointer 0
+
+                    if (subroutineType.equals("method")){
+                        vmWriter.writePush("argument", "0");
+                        vmWriter.writePop("pointer", "0");
+                    } 
+
+                //adding vm memory allocation step for object if constructor
+                int numFields;
+
+                if (subroutineType.equals("constructor")){
+
+                    //each field has takes up single address space unit this find out how much memory to allocate
+                    numFields = classTable.classVarCount("field");
+
+                    //writing the vm code to allocate the memory
+                    vmWriter.writePush("constant", Integer.toString(numFields));
+                    vmWriter.writeCall("Memory.alloc", 1);
+
+                    //adds allocated memory address to this pointer (pointer 0)
+                    vmWriter.writePop("pointer", "0");
+
+                }
 
 
                 //compiling rest of statements within the subroutine
@@ -287,29 +221,20 @@ public class CompilationEngine {
             currentToken = tokenizer.tokens.peekFirst();
         }
 
-        // gets } symbol and adds it to tags
+        // gets } symbol 
         symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
-
-
-        //adding subroutineBody opening tag
-        tags.add("</subroutineBody>");
     }
     //returns the num of local
     public void compileVarDec() {
         String kind = "local";
         String symbol = "";
         String varIndex;
-        // adding vardec open tag
-        tags.add("<varDec>");
         
         //adding  var tag
         String var = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(var));
 
         //adding type tag
         String type = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(type));
 
             while (!symbol.equals(";")) {
 
@@ -320,8 +245,6 @@ public class CompilationEngine {
                 classTable.subroutineDefine(varName, type, kind);
                 varIndex = classTable.subroutineIndex.get(varName).toString();
 
-                //adding tag
-                tags.add(CompilationEngine.printIdentifier(varName, "local", kind, varIndex ));
                 
                 //adding variable to symbol table with subroutine scope
                 //classTable.subroutineDefine(varName, type, kind);
@@ -330,23 +253,18 @@ public class CompilationEngine {
                 symbol = tokenizer.tokens.peekFirst();
                 if (symbol.equals(",")) {
                     symbol = tokenizer.advance();
-                    tags.add(CompilationEngine.printLexicalUnit(symbol));
                 }
         }
 
         //adding closing ;
         symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
         
-        // adding vardec close tag
-        tags.add("</varDec>");
         return;
     }
 
 
     public void compileStatements() {
         //output opening statemnts tag
-        tags.add("<statements>");
 
         //determining statement type and determining what to compile
         while (true) {
@@ -365,161 +283,180 @@ public class CompilationEngine {
                 break;
             }
         }
-        //output closing statemnts tag
-        tags.add("</statements>");
     }
 
     public void compileIfStatement() {
-        //adds if statement tag
-        tags.add("<ifStatement>");
+        
+        int currentIfNumber = numIfs;
 
+
+        //incrementing number of if statments for tracking must increment here in case there are nested if statements
+        numIfs++;
+
+        String truePhrase, falsePhrase, endPhrase;
         String currentToken = tokenizer.advance();
-        // adds the 'if' statement to the tags
-        tags.add(CompilationEngine.printLexicalUnit(currentToken));
 
-        //adds the open parenthese to the tags
+        //gets the open parenthese 
         String symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
 
         //compiles the expression to be evaluated
         this.compileExpression();
+        
 
-        //adds the close parenthese to the tags
-        symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
+        //first line of vmcode goes here - 
+        truePhrase = "IF_TRUE" + Integer.toString(currentIfNumber);
+        vmWriter.writeIf(truePhrase);
 
-        //adds the open curly bracket to the tags
+        //creating "if_false" jump
+        falsePhrase = "IF_FALSE" + Integer.toString(currentIfNumber);
+        vmWriter.writeGoTo(falsePhrase);
+
+
+        //gets the close parenthese
         symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
+
+
+        //gets the open curly bracket
+        symbol = tokenizer.advance();
+
+        //adding tag for vm code if true
+        vmWriter.writeLabel(truePhrase);
 
         //this compiles the statements within the if statement -recursive
         this.compileStatements();
 
-        //adds the close curly bracket to the tags
+        //gets the close curly bracket
         symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
 
         //determines if the there is an "else" statement in addition to the 'if'
         currentToken = tokenizer.tokens.peekFirst();
 
         if (currentToken.equals("else")) {
 
-            //adding keywordelse to tags
+            endPhrase = "IF_END" + Integer.toString(currentIfNumber);
+
+
+            //if else exists then need to go to if end if condition is true
+            vmWriter.writeGoTo(endPhrase);
+
+            //writing vmcode for "if_false" 
+            vmWriter.writeLabel(falsePhrase);
+
+            //getting keyword else 
             currentToken = tokenizer.advance();
-            tags.add(CompilationEngine.printLexicalUnit(currentToken));
             
-            //adding opening bracket to tags
+            //getting opening bracket
             symbol = tokenizer.advance();
-            tags.add(CompilationEngine.printLexicalUnit(symbol));
 
             //adding statements to else block
             this.compileStatements();
 
-            //adding closing bracket to tags
+            //getting closing bracket 
             symbol = tokenizer.advance();
-            tags.add(CompilationEngine.printLexicalUnit(symbol));
-        }
 
-        //adds closing if statement tag
-        tags.add("</ifStatement>");
+        //adding vm code for endif - only needed if there is an else statement
+        vmWriter.writeLabel(endPhrase);
+        
+        } else{ 
+
+            //writing vmcode for "if_false" 
+            vmWriter.writeLabel(falsePhrase);
+
+        }
     }
 
     public void compileWhileStatement() {
 
-        //adds opening while statement tags
-        tags.add("<whileStatement>");
+        //getting # of while statement
+        int currentWhile = numWhiles;
+        numWhiles++;
+
+        String labelPhrase = "WHILE_EXP" + Integer.toString(currentWhile);
+        String endPhrase = "WHILE_END" + Integer.toString(currentWhile);
+
+        //adding while label to signify start if while loop
+        vmWriter.writeLabel(labelPhrase);
 
         //adding while token as a keyword
         String currentToken = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(currentToken));
 
         //adding open parenthese 
         String symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
 
         //compiling expression
         this.compileExpression();
 
+        /*writing VM code with the following ruls for compilation:
+        1. Once the while condition is evaluated the boolean expression is inverted. This is becuase
+        the code required forces a branch if the condition is not met rather than is met.*/
+        vmWriter.writeArithmetic("not");
+
+        /* 2. "if-goto" branch is  made here to exit while loop if condition is not met*/
+        vmWriter.writeIf(endPhrase);
+
         //adding close parenthese 
         symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
 
         //adding open curly brace
         symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
 
         //compiling statements
         this.compileStatements();
 
         //adding closed curly brace
         symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
 
-
-        //adds closing while statement tags
-        tags.add("</whileStatement>");
+        //adding vm code to retest condition for while loop
+        vmWriter.writeGoTo(labelPhrase);
+        vmWriter.writeLabel(endPhrase);
     }
 
     public void compileDoStatement() {
-        //adds opening do statment tags
-        tags.add("<doStatement>");
 
         //adding 'do' keyword to tags
-        String nextToken = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(nextToken));        
+        String nextToken = tokenizer.advance();      
 
         //compiles subroutineCall
         this.compileSubroutineCall();
 
         //add semicolon to end of statment
-        String symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));     
+        String symbol = tokenizer.advance();   
 
-        //adds closing do statment tags
-        tags.add("</doStatement>");
+        //adding line to discard any value that is returned form the "DO statement"
+        vmWriter.writePop("temp", "0");
     }
 
     public void compileReturnStatement() {
-        //adding opening returnStatment tags
-        tags.add("<returnStatement>");
 
         //adding return keyword to tags
-        String nextToken = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(nextToken)); 
+        String nextToken = tokenizer.advance(); 
         
         //seeing if we need to return a value or just return
         String currentToken = tokenizer.tokens.peekFirst();
 
         if (!currentToken.equals(";")) {
             this.compileExpression();
+        } else{
+            vmWriter.writePush("constant", "0");
         }
         //this should add the end statement semi colon to the tags
         currentToken = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(currentToken)); 
-
-        //adding closing returnStatment tags
-        tags.add("</returnStatement>");
 
         //vm code here
         vmWriter.writeReturn();
-
     }
 
     public void compileLetStatement() {
-
+        boolean isArray = false;
         String varName, varType, varKind, varIndex, phrase;
-
-        //adding letStatement tags
-        tags.add("<letStatement>");
 
 
         //adding let keyword tag
         String keyword = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(keyword));
 
         //adding varName identifier tag
         varName = tokenizer.advance();
-        System.out.println("Compiling let, first var is: " + varName);
+
 
         //getting var type kind and index, searches subroutine scope first then class level
 
@@ -530,43 +467,50 @@ public class CompilationEngine {
         } else {
             varType = classTable.classType.get(varName);
             varKind = classTable.classKind.get(varName);
+            //fields aka kinds are referenced in the  pointer memory segment with vm
+            if (varKind.equals("field")){
+                varKind = "this";
+            }
             varIndex = classTable.classIndex.get(varName).toString();
         }
         
-        //
-        phrase = "<identifier> VARIABLE NAME: " + varName + "  Variable Type: " +varType + "  Variable Kind: " + varKind + "  Variable Index: "+ varIndex + "</identifier>";
-        tags.add(phrase);
-
-
-        //adding possible symbol [
+        // //adding possible symbol [
         String symbol = tokenizer.tokens.peekFirst();
         if (symbol.equals("[")) {
+            isArray = true;
             symbol = tokenizer.advance();
-            tags.add(CompilationEngine.printLexicalUnit(symbol));
             // if [  exists then an expression within it exists
             this.compileExpression();
 
             //adding closing ]
             symbol = tokenizer.advance();
-            tags.add(CompilationEngine.printLexicalUnit(symbol));
+
+            //vm code essentially finding base address of element - first push occurs when above expression is compiled
+            vmWriter.writePush(varKind, varIndex);
+            vmWriter.writeArithmetic("add");
         }
 
         //adding equals sign
         symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
 
         //compiling expression 
         this.compileExpression();
 
-        //VM CODE HERE - POPS VALUE TO DESIRED MEMORY SEGMENT LOCATION
+        if (isArray){
+            vmWriter.writePop("temp", "0");
+            vmWriter.writePop("pointer", "1");
+            vmWriter.writePush("temp", "0");
+            vmWriter.writePop("that", "0");
+        } else {
+        //VM CODE HERE - IF NO ARRAY POPS VALUE TO DESIRED MEMORY SEGMENT LOCATION
         vmWriter.writePop(varKind, varIndex);
+
+        }
+
+
 
         //adding semi colon to signify end of statement
         symbol = tokenizer.advance();
-        tags.add(CompilationEngine.printLexicalUnit(symbol));
-
-        //adding closing letStatement tags
-        tags.add("</letStatement>");
 
         return;
     }
@@ -580,14 +524,20 @@ public class CompilationEngine {
         operators.add("<");operators.add(">");operators.add("=");
 
         operatorMap.put("+", "add");
+        operatorMap.put("-", "sub");
+        operatorMap.put("*", "call Math.multiply 2");
+        operatorMap.put("/", "call Math.divide 2");
+        operatorMap.put(">", "gt");
+        operatorMap.put("<", "lt");
+        operatorMap.put("=", "eq");
+        operatorMap.put("&", "and");
+        operatorMap.put("|", "or");
 
-        tags.add("<expression>");
 
         this.compileTerm();
 
         while (operators.contains(tokenizer.tokens.peekFirst())) {
             operator = tokenizer.advance();
-            tags.add(CompilationEngine.printLexicalUnit(operator)); // should print the operator symbol
 
 
             //continue compilation of next term (if operator exists another term must exist)
@@ -598,15 +548,9 @@ public class CompilationEngine {
             vmWriter.writeArithmetic(vmTerm);
         }
 
-        
-
-
-        //adding final tag
-        tags.add("</expression>");
     }
 
     public void compileTerm() {
-        tags.add("<term>");
         String type = this.determineType();
 
         switch (type) {
@@ -634,14 +578,10 @@ public class CompilationEngine {
             default:
                 break;
         }
-
-        tags.add("</term>");
     }
 
     public void compileIntegerConstant() {
         String integerConstant = tokenizer.advance();
-        //tags for xml file
-        tags.add("<integerConstant> " + integerConstant + " </integerConstant>");
 
         //vm code added here
         vmWriter.writePush("constant", integerConstant);
@@ -649,85 +589,202 @@ public class CompilationEngine {
 
     public void compileStringConstant() {
         String currentToken = tokenizer.advance();
-        tags.add("<stringConstant> " + currentToken.substring(1,currentToken.length()-1) + " </stringConstant>");
+        String phrase = currentToken.substring(1,currentToken.length()-1);
+        int length = phrase.length();
+        char value;
+        int intValue;
+
+        vmWriter.writePush("constant", Integer.toString(length));
+        vmWriter.writeCall("String.new", 1);
+
+        //vm code here, iterate through string and turn char to int value then push to stack
+        for (int i = 0; i < phrase.length(); i++){
+            value = phrase.charAt(i); 
+            intValue = (int) value;
+            vmWriter.writePush("constant" , Integer.toString(intValue));
+            vmWriter.writeCall("String.appendChar", 2);
+        }
     }
 
+
     public void compileKeywordConstant() {
-        tags.add("<keyword> " + tokenizer.advance() + " </keyword>");
+        String keyWord = tokenizer.advance();
+
+        //vm code generated:
+
+        if (keyWord.equals("true")){
+            vmWriter.writePush("constant", "0");
+            vmWriter.writeArithmetic("not");
+        } else if (keyWord.equals("false")){
+            vmWriter.writePush("constant", "0");
+        } else if (keyWord.equals("this")) {
+            vmWriter.writePush("pointer", "0");
+        } else if (keyWord.equals("null")){
+            vmWriter.writePush("constant", "0");
+        }
     }
 
     public void compileSubroutineCall() {
-        tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print identifier term + identifier tags (either class name or subroutine name)
+
+        int numberOfArgs = 0;
+        String className = "";
+        String varSegment = "";
+        String varIndex = "";
+        String functionName = "";
+        String classAndFunctionName = "";
+        String objectName = "";
+        boolean isMethod = false;
+        
+        // should print identifier term + identifier tags (either class name or subroutine name)
+        functionName = tokenizer.advance();
+        
         if (tokenizer.tokens.peekFirst().equals("(")) {
-            tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); //this tag should be open parenthese
-            this.compileExpressionList();
-            tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); //should print closed parenthese
+            //if there is no dot after first identidier then the method is of the current class "this" needs to be added to stack as first var
+            className = classTable.name;
+            tokenizer.advance();
+             //this tag should be open parenthese
+            vmWriter.writePush("pointer", "0");
+            numberOfArgs = this.compileExpressionList() + 1;
+            tokenizer.advance();
+            //should print closed parenthese
         }
 
         if (tokenizer.tokens.peekFirst().equals(".")) {
-            tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print period
-            tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print identifier indicating subroutine name;
-            tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print open parenthese
-            this.compileExpressionList();
-            tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); //should print closed parenthese
+
+            /*If there is a function call involding a dot, then it can either be a static / method / constructor subroutine.
+            if it is a method - class name is there, if it is a static, must determine type that the caller is 
+             */
+
+             if (classTable.subroutineType.containsKey(functionName)){
+                objectName = functionName;
+                className = classTable.subroutineType.get(functionName);
+                isMethod = true;
+                varSegment = classTable.subroutineKind.get(objectName);
+                varIndex = Integer.toString(classTable.subroutineIndex.get(objectName));
+             } else if (classTable.classType.containsKey(functionName)) {
+                objectName = functionName;
+                className = classTable.classType.get(functionName);
+                isMethod = true;     
+                varSegment = classTable.classKind.get(objectName);
+                    if (varSegment.equals("field")){
+                        varSegment = "this";
+                    }
+                varIndex = Integer.toString(classTable.classIndex.get(objectName));
+             } else {
+                className = functionName;
+             }
+             // should print period
+            tokenizer.advance();
+        
+
+            //if method then first var to push to stack is the referenced object
+            if (isMethod) {
+
+                vmWriter.writePush(varSegment, varIndex);
+            }
+
+            //getting function name
+            functionName = tokenizer.advance();
+
+            tokenizer.advance();
+            // should print open parenthese
+            if (isMethod) {
+                numberOfArgs = this.compileExpressionList() + 1;
+            } else {
+                numberOfArgs = this.compileExpressionList();
+            }
+            tokenizer.advance();
         }
+
+        //vmwritercode for subroutine call here
+        classAndFunctionName = className + "." + functionName;
+
+
+
+        vmWriter.writeCall(classAndFunctionName, numberOfArgs);
     }
 
-    public void compileExpressionList() {
-        tags.add("<expressionList>");
+    public int compileExpressionList() {
+        int numberOfArgs = 0;
+
         String nextToken = tokenizer.tokens.peekFirst();
 
         if (!nextToken.equals(")")) {
+            numberOfArgs++;
             this.compileExpression();
             while (tokenizer.tokens.peekFirst().equals(",")) {
-                tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print a comma
+                numberOfArgs++;
+                // should print a comma
+                tokenizer.advance();
                 this.compileExpression();
             }
         }
-        tags.add("</expressionList>");
+
+        return numberOfArgs;
     }
 
     public void compileUrnaryOP() {
-        tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print symbol tag for either urnary negation or urnary not
+        String operatorType = tokenizer.advance();
+
+        //then compile term after urnary operator
         this.compileTerm();
+
+        //writing vm code for urnary operator
+        if (operatorType.equals("~"))
+            vmWriter.writeArithmetic("not");
+        else if (operatorType.equals("-")){
+            vmWriter.writeArithmetic("neg");
+    }
     }
 
     public void compileVarName() {
-
+        String nextToken;
         String varName = tokenizer.advance();
+        String nextSymbol = tokenizer.tokens.peekFirst();
         String varKind, varIndex;
+        boolean isArray = (nextSymbol.equals("["));
 
         if (classTable.subroutineType.containsKey(varName)) {
             varKind = classTable.subroutineKind.get(varName);
             varIndex = classTable.subroutineIndex.get(varName).toString();
+
         } else {
             varKind = classTable.classKind.get(varName);
+
+            //if a variable is a field variable then it is referred to in the pointer memory segment where pointer base address = "this"
+            if (varKind.equals("field")){
+                varKind = "this";
+            }
+
+
             varIndex = classTable.classIndex.get(varName).toString();
         }
 
+        //vmcode here //proper code depends on if varName is array or simply a var.
 
-
-        //xml tags here
-        System.out.println();
-        System.out.println("compiling: "+ varName);
-        tags.add(CompilationEngine.printLexicalUnit(varName)); // should print varname with identifier tag
-
-        //vmcode here
-        vmWriter.writePush(varKind, varIndex);
-        System.out.println("varname: " + varName + " kind: " + varKind + " index: " + varIndex);
-        
-        // if var name has indexing for an array must also compile here - will add SOON
-        if (tokenizer.tokens.peekFirst().equals("[")) {
-            tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print symbol [ with symbol tag
-            this.compileExpression(); //should compile the expression within the brackets
-            tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print symbol ] with symbol tag
+        if (isArray) {
+            //should remove the [ symbol
+            nextSymbol = tokenizer.advance();
+            this.compileExpression();
+            vmWriter.writePush(varKind, varIndex);
+            vmWriter.writeArithmetic("add");
+            vmWriter.writePop("pointer", "1");
+            vmWriter.writePush("that", "0");
+            //should remove ] symbol
+            nextSymbol = tokenizer.advance();
+        } else {
+            vmWriter.writePush(varKind, varIndex);
         }
+
+        nextToken = tokenizer.tokens.peekFirst();
+
     }
 
     public void compileParenthetical() {
-        tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print open parenthese
+
+        tokenizer.advance(); // should print open parenthese
         this.compileExpression();
-        tags.add(CompilationEngine.printLexicalUnit(tokenizer.advance())); // should print closed parenthese
+        tokenizer.advance();  // should print closed parenthese
     }
 
     //returns the typr of token that will be delivered after the "advance" method
@@ -817,25 +874,6 @@ public class CompilationEngine {
             return true;
         } else {
             return false;
-        }
-    }
-
-    public void writeXMLFile(String name, String path) {
-        String currentTag = "";
-        System.out.println(path + "\\" + name + ".xml");
-        try {
-            FileWriter file = new FileWriter(path + "\\" + name + ".xml");
-            while (tags.peekFirst() != null) {
-                currentTag = tags.pop();
-                file.write(currentTag);
-                file.write("\n");
-            }
-
-            file.close();
-
-        } catch (IOException e) {
-            System.out.println("FILE IO EXCEPTION IN FILE WRITE FUNCTION");
-            e.printStackTrace();
         }
     }
 

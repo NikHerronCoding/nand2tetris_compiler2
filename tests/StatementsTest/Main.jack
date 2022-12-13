@@ -1,0 +1,25 @@
+class Main{
+
+    function void main() {
+        var int a, b, c, d;
+
+        let a = 10;
+        let b = 20;
+        let c = 0;
+        let d = 0;
+
+        let c = Statements.letStatementTest(a,b);
+        do Statements.doStatementTest(a,b);
+        let d = Statments.ifStatementTest(a,b);
+        do Statements.whileStatementTest(a);
+
+        return;
+    }
+
+
+
+
+
+
+
+}

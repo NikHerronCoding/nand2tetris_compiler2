@@ -1,0 +1,12 @@
+function Urnary.urnaryNegation 1
+push argument 0
+not
+pop local 0
+push local 0
+return
+function Urnary.urnarySubtraction 1
+push argument 0
+neg
+pop local 0
+push local 0
+return

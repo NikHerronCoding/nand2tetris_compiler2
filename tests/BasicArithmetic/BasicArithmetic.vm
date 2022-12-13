@@ -1,0 +1,110 @@
+function BasicArithmetic.adderTWO 1
+push argument 0
+push argument 1
+add
+pop local 0
+push local 0
+return
+function BasicArithmetic.adderTHREE 1
+push argument 0
+push argument 1
+add
+push argument 2
+add
+pop local 0
+push local 0
+return
+function BasicArithmetic.adderTHREEParenthese 1
+push argument 0
+push argument 1
+push argument 2
+add
+add
+pop local 0
+push local 0
+return
+function BasicArithmetic.multTWO 1
+push argument 0
+push argument 1
+call Math.multiply 2
+pop local 0
+push local 0
+return
+function BasicArithmetic.multTHREE 1
+push argument 0
+push argument 1
+call Math.multiply 2
+push argument 2
+call Math.multiply 2
+pop local 0
+push local 0
+return
+function BasicArithmetic.multTHREEParenthese 1
+push argument 0
+push argument 1
+push argument 2
+call Math.multiply 2
+call Math.multiply 2
+pop local 0
+push local 0
+return
+function BasicArithmetic.divideTHREE 1
+push argument 0
+push argument 1
+call Math.divide 2
+push argument 2
+call Math.divide 2
+pop local 0
+push local 0
+return
+function BasicArithmetic.subtractTHREE 1
+push argument 0
+push argument 1
+sub
+push argument 2
+sub
+pop local 0
+push local 0
+return
+function BasicArithmetic.greaterTWO 1
+push argument 0
+push argument 1
+gt
+pop local 0
+push local 0
+return
+function BasicArithmetic.lessTWO 1
+push argument 0
+push argument 1
+lt
+pop local 0
+push local 0
+return
+function BasicArithmetic.eqTWO 1
+push argument 0
+push argument 1
+eq
+pop local 0
+push local 0
+return
+function BasicArithmetic.andTWO 1
+push argument 0
+push argument 1
+and
+pop local 0
+push local 0
+return
+function BasicArithmetic.orTWO 1
+push argument 0
+push argument 1
+or
+pop local 0
+push local 0
+return
+function BasicArithmetic.returnNothing 1
+push argument 1
+push argument 0
+and
+pop local 0
+push constant 0
+return

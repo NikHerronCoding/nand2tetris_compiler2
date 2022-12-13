@@ -1,0 +1,19 @@
+class BasicOOP{
+
+static int z;
+field int a;
+field bool b;
+
+//most basic constructor
+constructor BasicOOP new(int x, bool y){
+
+    let a = x;
+    let b = y;
+    let z = 5;
+
+    return this;
+
+}
+
+
+}

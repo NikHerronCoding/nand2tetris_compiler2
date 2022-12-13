@@ -42,7 +42,8 @@ public class VMWriter {
     }
 
     public void writeIf(String label){
-        String line = "If-goto " + label; 
+        String line = "if-goto " + label;
+        this.addVMLine(line);
     }
 
     public void writeCall(String functionName, int nArgs){

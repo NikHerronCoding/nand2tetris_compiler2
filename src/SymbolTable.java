@@ -16,7 +16,6 @@ class SymbolTable {
     
 
     public static void main(String[] args) {
-        System.out.println("Test.");
         return;
     }
 
@@ -86,7 +85,6 @@ class SymbolTable {
            kindCount++;
         }
       }
-      //System.out.println("Number Times Counted: " + kindCount);
       return kindCount;
     }
 

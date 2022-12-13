@@ -1,0 +1,20 @@
+function Main.main 4
+push constant 0
+not
+pop local 0
+push constant 5
+pop local 2
+push local 0
+call Urnary.urnaryNegation 1
+pop local 1
+push local 2
+call Urnary.urnarySubtraction 1
+pop local 3
+push local 1
+call Output.printInt 1
+pop temp 0
+push local 3
+call Output.printInt 1
+pop temp 0
+push constant 0
+return

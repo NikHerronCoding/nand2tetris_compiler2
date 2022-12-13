@@ -1,0 +1,26 @@
+function Main.main 4
+push constant 10
+pop local 0
+push constant 20
+pop local 1
+push constant 0
+pop local 2
+push constant 0
+pop local 3
+push local 0
+push local 1
+call Statements.letStatementTest 2
+pop local 2
+push local 0
+push local 1
+call Statements.doStatementTest 2
+pop temp 0
+push local 0
+push local 1
+call Statments.ifStatementTest 2
+pop local 3
+push local 0
+call Statements.whileStatementTest 1
+pop temp 0
+push constant 0
+return
